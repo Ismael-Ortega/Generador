@@ -1,0 +1,15 @@
+C:\ITQ\5to Sem\Automatas II\Generador\bin\Debug\net6.0\Generador.exe
+C:\ITQ\5to Sem\Automatas II\Generador\bin\Debug\net6.0\Generador.deps.json
+C:\ITQ\5to Sem\Automatas II\Generador\bin\Debug\net6.0\Generador.runtimeconfig.json
+C:\ITQ\5to Sem\Automatas II\Generador\bin\Debug\net6.0\Generador.dll
+C:\ITQ\5to Sem\Automatas II\Generador\bin\Debug\net6.0\Generador.pdb
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\Generador.csproj.AssemblyReference.cache
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\Generador.GeneratedMSBuildEditorConfig.editorconfig
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\Generador.AssemblyInfoInputs.cache
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\Generador.AssemblyInfo.cs
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\Generador.csproj.CoreCompileInputs.cache
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\Generador.dll
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\refint\Generador.dll
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\Generador.pdb
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\Generador.genruntimeconfig.cache
+C:\ITQ\5to Sem\Automatas II\Generador\obj\Debug\net6.0\ref\Generador.dll
