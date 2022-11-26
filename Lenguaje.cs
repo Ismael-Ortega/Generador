@@ -6,7 +6,7 @@ using System.Collections.Generic;
 //                  { -> incrementa un tabluador, } -> decrementa un tabulador
 //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo con la
 //                  primera produccion de la gramatica
-//Requerimiento 3.- La primera produccion es publica y el resto privadas
+//Requerimiento 3.- La primera produccion es publica y el resto privadas LISTO?
 //Requerimiento 4.- El contructor Lexico parametrizado debe validar que la extension del archivo a compilar
 //                  sea .gen, y si no es, entonces levantamos una excepcion
 //Requerimiento 5.- Resolver la ambiguedad de ST y SNT en el switch case
@@ -19,6 +19,8 @@ namespace Generador
     public class Lenguaje : Sintaxis, IDisposable
     {
         List<string> listaSNT;
+        string primeraProduccion;
+        bool producciones = false;
 
         /*public Lenguaje(string nombre) ; base (nombre){
             listaSNT = new List<string>();
@@ -46,9 +48,9 @@ namespace Generador
             return true;
             //return listaSNT.Contains(contenido);
         }
-        private bool agregarSNT(string contenido){
+        /*private bool agregarSNT(string contenido){
             listaSNT.Add(contenido);
-        }
+        }*/
         private void Programa(string produccionPrincipal)
         {
             programa.WriteLine("using System;");
@@ -118,7 +120,16 @@ namespace Generador
         }
         private void listaProducciones()
         {
-            lenguaje.WriteLine("\t\tprivate void " + getContenido() + "()");
+            //Requerimiento 3?
+            if (producciones == false)
+            {
+                lenguaje.WriteLine("\t\tpublic void " + getContenido() + "()");
+                producciones = true;
+            }
+            else
+            {
+                lenguaje.WriteLine("\t\tprivate void " + getContenido() + "()");
+            }
             lenguaje.WriteLine("\t\t{");
             match(Tipos.ST);
             match(Tipos.Produce);
@@ -132,7 +143,16 @@ namespace Generador
         }
         private void simbolos()
         {
-            if (esTipo(getContenido()))
+            if (getContenido() == "(")
+            {
+                match("(");
+                lenguaje.WriteLine("\t\tif ()");
+                lenguaje.WriteLine("\t\t{");
+                simbolos();
+                match(")");
+                lenguaje.WriteLine("\t\t}");
+            }
+            else if (esTipo(getContenido()))
             {
                 lenguaje.WriteLine("\t\t\tmatch(Tipos." + getContenido() + ");");
                 match(Tipos.SNT);
@@ -152,7 +172,7 @@ namespace Generador
                 throw new Exception("Error de sintaxis");
             }
 
-            if (getClasificacion() != Tipos.finProduccion)
+            if (getClasificacion() != Tipos.finProduccion && getContenido() != ")")
             {
                 simbolos();
             }
