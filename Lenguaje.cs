@@ -5,8 +5,8 @@ using System.Collections.Generic;
 //Requerimiento 1.- Construir un metodo para escribir en el archivo lenguaje.cs indentando el codigo
 //                  { -> incrementa un tabluador, } -> decrementa un tabulador
 //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo con la
-//                  primera produccion de la gramatica
-//Requerimiento 3.- La primera produccion es publica y el resto privadas LISTO?
+//                  primera produccion de la gramatica LISTO
+//Requerimiento 3.- La primera produccion es publica y el resto privadas LISTO
 //Requerimiento 4.- El contructor Lexico parametrizado debe validar que la extension del archivo a compilar
 //                  sea .gen, y si no es, entonces levantamos una excepcion
 //Requerimiento 5.- Resolver la ambiguedad de ST y SNT en el switch case
@@ -51,7 +51,7 @@ namespace Generador
         /*private bool agregarSNT(string contenido){
             listaSNT.Add(contenido);
         }*/
-        private void Programa(string produccionPrincipal)
+        private void Programa(string primeraProduccion)
         {
             programa.WriteLine("using System;");
             programa.WriteLine("using System.IO;");
@@ -69,7 +69,7 @@ namespace Generador
             programa.WriteLine("\t\t\t\tusing (Lenguaje a = new Lenguaje())");
             programa.WriteLine();
             programa.WriteLine("\t\t\t\t{");
-            programa.WriteLine("\t\t\t\t\ta." + produccionPrincipal + "();");
+            programa.WriteLine("\t\t\t\t\ta." + primeraProduccion + "();");
             programa.WriteLine("\t\t\t\t}");
             programa.WriteLine("\t\t\t}");
             programa.WriteLine("\t\t\tcatch (Exception e)");
@@ -83,7 +83,9 @@ namespace Generador
         public void gramatica()
         {
             cabecera();
-            Programa("programa");
+            //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo
+            primeraProduccion = getContenido();
+            Programa(primeraProduccion);
             cabeceraLenguaje();
             listaProducciones();
             lenguaje.WriteLine("\t}");
@@ -120,10 +122,12 @@ namespace Generador
         }
         private void listaProducciones()
         {
-            //Requerimiento 3?
+            //Requerimiento 3.- La primera produccion es publica y el resto privadas
             if (producciones == false)
             {
-                lenguaje.WriteLine("\t\tpublic void " + getContenido() + "()");
+                //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo
+                primeraProduccion = getContenido();
+                lenguaje.WriteLine("\t\tpublic void " + primeraProduccion + "()");
                 producciones = true;
             }
             else
@@ -155,7 +159,7 @@ namespace Generador
             else if (esTipo(getContenido()))
             {
                 lenguaje.WriteLine("\t\t\tmatch(Tipos." + getContenido() + ");");
-                match(Tipos.SNT);
+                match(Tipos.ST);
             }
             else if (esSNT(getContenido()))
             {
