@@ -69,7 +69,7 @@ namespace Generador
             }
             else
             {
-                throw new Error("Error: El archivo " +Path.GetFileName(nombre)+ " no existe ", log);
+                throw new Error("Error: El archivo " + Path.GetFileName(nombre) + " no existe ", log);
             }
         }
         public void cerrar()

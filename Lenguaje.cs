@@ -8,8 +8,8 @@ using System.Collections.Generic;
 //                  primera produccion de la gramatica LISTO
 //Requerimiento 3.- La primera produccion es publica y el resto privadas LISTO
 //Requerimiento 4.- El contructor Lexico parametrizado debe validar que la extension del archivo a compilar
-//                  sea .gen, y si no es, entonces levantamos una excepcion
-//Requerimiento 5.- Resolver la ambiguedad de ST y SNT en el switch case
+//                  sea .gen, y si no es, entonces levantamos una excepcion LISTO
+//Requerimiento 5.- Resolver la ambiguedad de ST y SNT
 //                  recorrer linea por linea el archivo .gram para extraer el nombre de cada produccion
 //Requerimiento 6.- Agregar el parenetsis izquierdo y derecho escapados en la matriz de transiciones
 //Requerimiento 7.- Implementar el OR y la cerradura epsilon
@@ -22,18 +22,9 @@ namespace Generador
         string primeraProduccion;
         bool producciones = false;
 
-        /*public Lenguaje(string nombre) ; base (nombre){
-            listaSNT = new List<string>();
-            tabuladorPrograma = 0;
-            abuladorLenguaje = 0;
-            FileSystemEventHandlerMetodo = false;
-        }*/
         public Lenguaje(string nombre) : base(nombre)
         {
-            /*listaSNT = new List<string>();
-            tabuladorPrograma = 0;
-            abuladorLenguaje = 0;
-            FileSystemEventHandlerMetodo = false;*/
+
         }
 
         public Lenguaje()
@@ -44,13 +35,17 @@ namespace Generador
         {
             cerrar();
         }
-        private bool esSNT(string contenido){
-            return true;
-            //return listaSNT.Contains(contenido);
+        private bool esSNT(string contenido)
+        {
+            //Verificar por que no hace el matcheo correcto en Generico
+            //agregarSNT(contenido);
+            return listaSNT.Contains(contenido);
+            //return true;
         }
-        /*private bool agregarSNT(string contenido){
+        private void agregarSNT(string contenido)
+        {
             listaSNT.Add(contenido);
-        }*/
+        }
         private void Programa(string primeraProduccion)
         {
             programa.WriteLine("using System;");
@@ -168,6 +163,7 @@ namespace Generador
             }
             else if (getClasificacion() == Tipos.ST)
             {
+                //Debe de entrar aqui el match("#");
                 lenguaje.WriteLine("\t\t\tmatch(\"" + getContenido() + "\");");
                 match(Tipos.ST);
             }
@@ -184,6 +180,7 @@ namespace Generador
 
         private bool esTipo(string clasificacion)
         {
+            //Requerimiento 5.- Resolver la ambiguedad de ST y SNT
             switch (clasificacion)
             {
                 case "Identificador":
