@@ -11,7 +11,7 @@ using System.Collections.Generic;
 //                  sea .gen, y si no es, entonces levantamos una excepcion LISTO
 //Requerimiento 5.- Resolver la ambiguedad de ST y SNT
 //                  recorrer linea por linea el archivo .gram para extraer el nombre de cada produccion
-//Requerimiento 6.- Agregar el parenetsis izquierdo y derecho escapados en la matriz de transiciones
+//Requerimiento 6.- Agregar el parenetsis izquierdo y derecho escapados en la matriz de transiciones LISTO?
 //Requerimiento 7.- Implementar el OR y la cerradura epsilon
 
 namespace Generador
@@ -19,7 +19,7 @@ namespace Generador
     public class Lenguaje : Sintaxis, IDisposable
     {
         List<string> listaSNT;
-        string primeraProduccion;
+        string primeraProduccion, produccion;
         bool producciones = false;
 
         public Lenguaje(string nombre) : base(nombre)
@@ -42,9 +42,35 @@ namespace Generador
             return listaSNT.Contains(contenido);
             //return true;
         }
-        private void agregarSNT(string contenido)
+        private void agregarSNT()
         {
-            listaSNT.Add(contenido);
+            produccion = getContenido();
+            listaSNT.Add(produccion);
+            //Buscar netxWriteline pra realizar el salto de linea
+            match(Tipos.finProduccion);
+
+            //Necesitamos guardar la posicion primero sobre donde empezamos
+            //Guardamos el salto de linea antes de ingresar a agregarSNT?
+            int posicionAux = posicion;
+            int lineaAux = linea;
+            int tamañoAux = getContenido().Length;
+            
+            posicion = posicionAux - tamañoAux;
+            linea = lineaAux;
+
+            if (produccion != FinArchivo de archivo){
+                //Funcion recursiva
+                agregarSNT();
+            } else {
+                setPosicion(posicion);
+            }
+            //El NextToken debe de ir dentro de agregarSNT?
+            NextToken();
+        }
+        private void setPosicion(int posicion) //Creamos metodo para poder guardar la posicion
+        {
+            archivo.DiscardBufferedData();
+            archivo.BaseStream.Seek(posicion, SeekOrigin.Begin);
         }
         private void Programa(string primeraProduccion)
         {
@@ -82,6 +108,7 @@ namespace Generador
             primeraProduccion = getContenido();
             Programa(primeraProduccion);
             cabeceraLenguaje();
+            agregarSNT();
             listaProducciones();
             lenguaje.WriteLine("\t}");
             lenguaje.WriteLine("}");

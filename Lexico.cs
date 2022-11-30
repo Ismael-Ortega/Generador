@@ -14,12 +14,23 @@ namespace Generador
         protected int linea, posicion;
         int[,] TRAND = new int[,]
         {
-            {0,1,5,3,4,5},
+            /*{0,1,5,3,4,5},
             {F,F,2,F,F,F},
             {F,F,F,F,F,F},
             {F,F,F,3,F,F},
             {F,F,F,F,F,F},
-            {F,F,F,F,F,F}
+            {F,F,F,F,F,F}*/
+
+            //Requerimiento 6.- Agregar el parentesis izquierdo y derecho
+            {0,1,8,3,4,5,F,F,8},
+            {F,F,2,F,F,F,F,F,F},
+            {F,F,F,F,F,F,F,F,F},
+            {F,F,F,3,F,F,F,F,F},
+            {F,F,F,F,F,F,F,F,F},
+            {F,F,F,F,F,F,6,7,F},
+            {F,F,F,F,F,F,F,F,F},
+            {F,F,F,F,F,F,F,F,F},
+            {F,F,F,F,F,F,F,F,F}
         };
         public Lexico()
         {
@@ -95,7 +106,17 @@ namespace Generador
                 case 4:
                     setClasificacion(Tipos.finProduccion);
                     break;
+                    //Requerimiento 6.- Agregar el parentesis izquierdo y derecho
                 case 5:
+                    setClasificacion(Tipos.ST);
+                    break;
+                case 6:
+                    setClasificacion(Tipos.PIzquierdo);
+                    break;
+                case 7:
+                    setClasificacion(Tipos.PDerecho);
+                    break;
+                case 8:
                     setClasificacion(Tipos.ST);
                     break;
             }
@@ -115,12 +136,21 @@ namespace Generador
                 return 1;
             } else if (c == '>')
             {
-                return 2;
+                return 8;
             } else if (Char.IsLetter(c))
             {
                 return 3;
-            }
-            return 5;
+            } else if (c == '\'')
+            {
+                return 5;
+            } else if (c == '(')
+            {
+                return F;
+            } else if (c == ')')
+            {
+                return F;
+            } 
+            return 8;
         }
         public void NextToken() 
         {
