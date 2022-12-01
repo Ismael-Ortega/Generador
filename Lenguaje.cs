@@ -11,7 +11,7 @@ using System.Collections.Generic;
 //                  sea .gen, y si no es, entonces levantamos una excepcion LISTO
 //Requerimiento 5.- Resolver la ambiguedad de ST y SNT
 //                  recorrer linea por linea el archivo .gram para extraer el nombre de cada produccion
-//Requerimiento 6.- Agregar el parenetsis izquierdo y derecho escapados en la matriz de transiciones LISTO?
+//Requerimiento 6.- Agregar el parenetsis izquierdo y derecho escapados en la matriz de transiciones LISTO
 //Requerimiento 7.- Implementar el OR y la cerradura epsilon
 
 namespace Generador
@@ -39,14 +39,16 @@ namespace Generador
         {
             //Verificar por que no hace el matcheo correcto en Generico
             //agregarSNT(contenido);
-            return listaSNT.Contains(contenido);
-            //return true;
+            //return listaSNT.Contains(contenido);
+            return true;
         }
         private void agregarSNT()
         {
             produccion = getContenido();
             listaSNT.Add(produccion);
             //Buscar netxWriteline pra realizar el salto de linea
+            //Podemos utilizar tambien readLine()
+            Console.ReadLine();
             match(Tipos.finProduccion);
 
             //Necesitamos guardar la posicion primero sobre donde empezamos
@@ -58,14 +60,12 @@ namespace Generador
             posicion = posicionAux - tamañoAux;
             linea = lineaAux;
 
-            if (produccion != FinArchivo de archivo){
+            if (produccion != FinArchivo){
                 //Funcion recursiva
                 agregarSNT();
             } else {
                 setPosicion(posicion);
             }
-            //El NextToken debe de ir dentro de agregarSNT?
-            NextToken();
         }
         private void setPosicion(int posicion) //Creamos metodo para poder guardar la posicion
         {
@@ -103,12 +103,13 @@ namespace Generador
         }
         public void gramatica()
         {
+            //agregarSNT();
+            //NextToken();
             cabecera();
             //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo
             primeraProduccion = getContenido();
             Programa(primeraProduccion);
             cabeceraLenguaje();
-            agregarSNT();
             listaProducciones();
             lenguaje.WriteLine("\t}");
             lenguaje.WriteLine("}");
@@ -169,13 +170,13 @@ namespace Generador
         }
         private void simbolos()
         {
-            if (getContenido() == "(")
+            if (getContenido() == "\\(")
             {
-                match("(");
+                match("\\(");
                 lenguaje.WriteLine("\t\tif ()");
                 lenguaje.WriteLine("\t\t{");
                 simbolos();
-                match(")");
+                match("\\)");
                 lenguaje.WriteLine("\t\t}");
             }
             else if (esTipo(getContenido()))
@@ -199,7 +200,7 @@ namespace Generador
                 throw new Exception("Error de sintaxis");
             }
 
-            if (getClasificacion() != Tipos.finProduccion && getContenido() != ")")
+            if (getClasificacion() != Tipos.finProduccion && getContenido() != "\\)")
             {
                 simbolos();
             }
@@ -207,7 +208,6 @@ namespace Generador
 
         private bool esTipo(string clasificacion)
         {
-            //Requerimiento 5.- Resolver la ambiguedad de ST y SNT
             switch (clasificacion)
             {
                 case "Identificador":

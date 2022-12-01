@@ -1,5 +1,5 @@
 Archivo: c2.gram
-Fecha: 29/11/2022 09:32:58 a. m.
+Fecha: 30/11/2022 12:14:00 p. m.
 Gramatica ST
 : ST
 cplusplus ST
@@ -8,3 +8,32 @@ cplusplus ST
 Programa ST
 -> Produce
 # ST
+Identificador ST
+, ST
+Numero ST
+Libreria ST
+
+ finProduccion
+Librerias ST
+-> Produce
+# ST
+include ST
+< ST
+Identificador ST
+. ST
+h ST
+> ST
+
+ finProduccion
+Variables ST
+-> Produce
+\( PIzquierdo
+Identificador ST
+\) PDerecho
+
+ finProduccion
+ListaIdentificadores ST
+-> Produce
+Numero ST
+
+ finProduccion

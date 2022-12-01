@@ -22,7 +22,7 @@ namespace Generador
             {F,F,F,F,F,F}*/
 
             //Requerimiento 6.- Agregar el parentesis izquierdo y derecho
-            {0,1,8,3,4,5,F,F,8},
+            {0,1,8,3,4,5,8,8,8},
             {F,F,2,F,F,F,F,F,F},
             {F,F,F,F,F,F,F,F,F},
             {F,F,F,3,F,F,F,F,F},
@@ -48,7 +48,7 @@ namespace Generador
             log.WriteLine("Archivo: c.gram");
             log.WriteLine(DateTime.Now);
 
-            //Investigar como checar si un archivo existe o no existe 
+            //Investigar como checar si un archivo existe o no existe
             if (existencia == true)
             {
                 archivo = new StreamReader(path);
@@ -136,19 +136,19 @@ namespace Generador
                 return 1;
             } else if (c == '>')
             {
-                return 8;
+                return 2;
             } else if (Char.IsLetter(c))
             {
                 return 3;
-            } else if (c == '\'')
+            } else if (c == '\\') //Requerimiento 6.- Agregar el parentesis izquierdo y derecho
             {
                 return 5;
             } else if (c == '(')
             {
-                return F;
+                return 6;
             } else if (c == ')')
             {
-                return F;
+                return 7;
             } 
             return 8;
         }
