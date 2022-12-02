@@ -7,10 +7,10 @@ using System.Collections.Generic;
 //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo con la
 //                  primera produccion de la gramatica LISTO
 //Requerimiento 3.- La primera produccion es publica y el resto privadas LISTO
-//Requerimiento 4.- El contructor Lexico parametrizado debe validar que la extension del archivo a compilar
+//Requerimiento 4.- El constructor Lexico parametrizado debe validar que la extension del archivo a compilar
 //                  sea .gen, y si no es, entonces levantamos una excepcion LISTO
 //Requerimiento 5.- Resolver la ambiguedad de ST y SNT
-//                  recorrer linea por linea el archivo .gram para extraer el nombre de cada produccion
+//                  recorrer linea por linea el archivo .gram para extraer el nombre de cada produccion LISTO
 //Requerimiento 6.- Agregar el parenetsis izquierdo y derecho escapados en la matriz de transiciones LISTO
 //Requerimiento 7.- Implementar el OR y la cerradura epsilon
 
@@ -20,16 +20,21 @@ namespace Generador
     {
         List<string> listaSNT;
         string primeraProduccion, produccion;
+        int contTabulado = 0, tab = 0, tam = 0;
         bool producciones = false;
 
         public Lenguaje(string nombre) : base(nombre)
         {
-
+            listaSNT = new List<string>();
+            primeraProduccion = "";
+            produccion = "";
         }
 
         public Lenguaje()
         {
-
+            listaSNT = new List<string>();
+            primeraProduccion = "";
+            produccion = "";
         }
         public void Dispose()
         {
@@ -37,43 +42,55 @@ namespace Generador
         }
         private bool esSNT(string contenido)
         {
-            //Verificar por que no hace el matcheo correcto en Generico
-            //agregarSNT(contenido);
-            //return listaSNT.Contains(contenido);
-            return true;
+            return listaSNT.Contains(contenido);
         }
         private void agregarSNT()
         {
-            produccion = getContenido();
-            listaSNT.Add(produccion);
-            //Buscar netxWriteline pra realizar el salto de linea
-            //Podemos utilizar tambien readLine()
-            Console.ReadLine();
-            match(Tipos.finProduccion);
-
-            //Necesitamos guardar la posicion primero sobre donde empezamos
-            //Guardamos el salto de linea antes de ingresar a agregarSNT?
             int posicionAux = posicion;
             int lineaAux = linea;
             int tamañoAux = getContenido().Length;
-            
-            posicion = posicionAux - tamañoAux;
-            linea = lineaAux;
 
-            if (produccion != FinArchivo){
-                //Funcion recursiva
-                agregarSNT();
-            } else {
+            while (!FinArchivo()){
+                produccion = getContenido();
+                listaSNT.Add(produccion);
+                archivo.ReadLine();
+                NextToken();
+                
+            } 
+                posicion = posicionAux - tamañoAux;
+                linea = lineaAux;
                 setPosicion(posicion);
-            }
+                NextToken();
+            
         }
         private void setPosicion(int posicion) //Creamos metodo para poder guardar la posicion
         {
             archivo.DiscardBufferedData();
             archivo.BaseStream.Seek(posicion, SeekOrigin.Begin);
         }
+       /* public void tabluador(string texto)
+        { //Requerimiento 1 Crear un metodo para el identado del archivo
+            //Debe de recorrer toda la cadena en busca de llaves
+            tam = getContenido().Length;
+            for (int i = 0; i < tam; i++)
+            {
+                if (getContenido[i] == '{')
+                {
+                    contTabulado++;
+                }
+                else if (getContenido[i] == '}')
+                {
+                    contTabulado--;
+                }
+            }
+            for (tab = 0; tab < contTabulado; tab++)
+            {
+                programa.WriteLine("\t");
+            }
+        }*/
         private void Programa(string primeraProduccion)
         {
+            //tabluador("using System;");
             programa.WriteLine("using System;");
             programa.WriteLine("using System.IO;");
             programa.WriteLine("using System.Collections.Generic;");
@@ -103,9 +120,9 @@ namespace Generador
         }
         public void gramatica()
         {
-            //agregarSNT();
-            //NextToken();
             cabecera();
+            agregarSNT();
+            
             //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo
             primeraProduccion = getContenido();
             Programa(primeraProduccion);

@@ -1,6 +1,10 @@
 Gramatica: cplusplus
-    Programa  -> #Identificador, Numero Libreria
+    Programa  -> Librerias Variables Main
+    Main      -> TipoDato main() BloqueInstrucciones
     Librerias -> #include<Identificador.h>
     Variables -> \(Identificador\)
-    ListaIdentificadores -> Numero
-    
+    Printf -> printf(\(Cadena\))
+    Scanf -> scanf(\(Cadena\))
+    BloqueInstrucciones -> {ListaInstrucciones}
+    ListaInstrucciones -> Instruccion \(;ListaInstrucciones\)
+    Instruccion -> Printf (Scanf)
