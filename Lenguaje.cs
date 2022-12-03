@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 //Requerimiento 1.- Construir un metodo para escribir en el archivo lenguaje.cs indentando el codigo
-//                  { -> incrementa un tabluador, } -> decrementa un tabulador
+//                  { -> incrementa un tabluador, } -> decrementa un tabulador LISTO?
 //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo con la
 //                  primera produccion de la gramatica LISTO
 //Requerimiento 3.- La primera produccion es publica y el resto privadas LISTO
@@ -12,7 +12,7 @@ using System.Collections.Generic;
 //Requerimiento 5.- Resolver la ambiguedad de ST y SNT
 //                  recorrer linea por linea el archivo .gram para extraer el nombre de cada produccion LISTO
 //Requerimiento 6.- Agregar el parenetsis izquierdo y derecho escapados en la matriz de transiciones LISTO
-//Requerimiento 7.- Implementar el OR y la cerradura epsilon
+//Requerimiento 7.- Implementar el OR y la cerradura epsilon LISTO?
 
 namespace Generador
 {
@@ -46,21 +46,23 @@ namespace Generador
         }
         private void agregarSNT()
         {
+            //Requerimiento 5.- Resolver la ambiguedad de ST y SNT
             int posicionAux = posicion;
             int lineaAux = linea;
             int tamañoAux = getContenido().Length;
 
-            while (!FinArchivo()){
+            while (!FinArchivo())
+            {
                 produccion = getContenido();
                 listaSNT.Add(produccion);
                 archivo.ReadLine();
                 NextToken();
                 
             } 
-                posicion = posicionAux - tamañoAux;
-                linea = lineaAux;
-                setPosicion(posicion);
-                NextToken();
+            posicion = posicionAux - tamañoAux;
+            linea = lineaAux;
+            setPosicion(posicion);
+            NextToken();
             
         }
         private void setPosicion(int posicion) //Creamos metodo para poder guardar la posicion
@@ -68,68 +70,83 @@ namespace Generador
             archivo.DiscardBufferedData();
             archivo.BaseStream.Seek(posicion, SeekOrigin.Begin);
         }
-       /* public void tabluador(string texto)
-        { //Requerimiento 1 Crear un metodo para el identado del archivo
-            //Debe de recorrer toda la cadena en busca de llaves
-            tam = getContenido().Length;
+        public void tabulador(string texto, string doc)
+        {
+            //Requerimiento 1 Crear un metodo para el identado del archivo
+            tam = texto.Length;
             for (int i = 0; i < tam; i++)
             {
-                if (getContenido[i] == '{')
-                {
-                    contTabulado++;
-                }
-                else if (getContenido[i] == '}')
+                if (texto[i] == '}')
                 {
                     contTabulado--;
                 }
             }
             for (tab = 0; tab < contTabulado; tab++)
             {
-                programa.WriteLine("\t");
+                if (doc == "programa")
+                {
+                    programa.Write("\t");
+                }
+                else
+                {
+                    lenguaje.Write("\t");
+                }
             }
-        }*/
+            for (int i = 0; i < tam; i++)
+            {
+                if (texto[i] == '{')
+                {
+                    contTabulado++;
+                }
+            }
+            if (doc == "programa")
+            {
+                programa.WriteLine(texto);
+            }
+            else
+            {
+                lenguaje.WriteLine(texto);
+            }
+        }
         private void Programa(string primeraProduccion)
         {
-            //tabluador("using System;");
-            programa.WriteLine("using System;");
-            programa.WriteLine("using System.IO;");
-            programa.WriteLine("using System.Collections.Generic;");
-            programa.WriteLine();
-            programa.WriteLine("namespace Generico");
-            programa.WriteLine("{");
-            programa.WriteLine("\tpublic class Programa");
-            programa.WriteLine("\t{");
-            programa.WriteLine("\t\tstatic void Main(string[] args)");
-            programa.WriteLine("\t\t{");
-            //programa.WriteLine("\t\t\t{");
-            programa.WriteLine("\t\t\ttry");
-            programa.WriteLine("\t\t\t{");
-            programa.WriteLine("\t\t\t\tusing (Lenguaje a = new Lenguaje())");
-            programa.WriteLine();
-            programa.WriteLine("\t\t\t\t{");
-            programa.WriteLine("\t\t\t\t\ta." + primeraProduccion + "();");
-            programa.WriteLine("\t\t\t\t}");
-            programa.WriteLine("\t\t\t}");
-            programa.WriteLine("\t\t\tcatch (Exception e)");
-            programa.WriteLine("\t\t\t{");
-            programa.WriteLine("\t\t\t\tConsole.WriteLine(e.Message);");
-            programa.WriteLine("\t\t\t}");
-            programa.WriteLine("\t\t}");
-            programa.WriteLine("\t}");
-            programa.WriteLine("}");
+            tabulador("using System;","programa");
+            tabulador("using System.IO;","programa");
+            tabulador("using System.Collections.Generic;","programa");
+            tabulador("","programa");
+            tabulador("namespace Generico","programa");
+            tabulador("{","programa");
+            tabulador("public class Programa","programa");
+            tabulador("{","programa");
+            tabulador("static void Main(string[] args)","programa");
+            tabulador("{","programa");
+            tabulador("try","programa");
+            tabulador("{","programa");
+            tabulador("using (Lenguaje a = new Lenguaje())","programa");
+            tabulador("","programa");
+            tabulador("{","programa");
+            tabulador("a." + primeraProduccion + "();","programa");
+            tabulador("}","programa");
+            tabulador("}","programa");
+            tabulador("catch (Exception e)","programa");
+            tabulador("{","programa");
+            tabulador("Console.WriteLine(e.Message);","programa");
+            tabulador("}","programa");
+            tabulador("}","programa");
+            tabulador("}","programa");
+            tabulador("}","programa");
         }
         public void gramatica()
         {
             cabecera();
             agregarSNT();
-            
             //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo
             primeraProduccion = getContenido();
             Programa(primeraProduccion);
             cabeceraLenguaje();
             listaProducciones();
-            lenguaje.WriteLine("\t}");
-            lenguaje.WriteLine("}");
+            tabulador("}", "lenguaje");
+            tabulador("}", "lenguaje");
 
         }
         private void cabecera()
@@ -141,24 +158,24 @@ namespace Generador
         }
         private void cabeceraLenguaje()
         {
-            lenguaje.WriteLine("using System;");
-            lenguaje.WriteLine("using System.Collections.Generic;");
+            tabulador("using System;", "lenguaje");
+            tabulador("using System.Collections.Generic;", "lenguaje");
 
-            lenguaje.WriteLine("namespace Generico");
-            lenguaje.WriteLine("\t{");
-            lenguaje.WriteLine("\tpublic class Lenguaje : Sintaxis, IDisposable");
-            lenguaje.WriteLine("\t{");
-            lenguaje.WriteLine("\t\tpublic Lenguaje(string nombre) : base(nombre)");
-            lenguaje.WriteLine("\t\t{");
-            lenguaje.WriteLine("\t\t}");
+            tabulador("namespace Generico", "lenguaje");
+            tabulador("{", "lenguaje");
+            tabulador("public class Lenguaje : Sintaxis, IDisposable", "lenguaje");
+            tabulador("{", "lenguaje");
+            tabulador("public Lenguaje(string nombre) : base(nombre)", "lenguaje");
+            tabulador("{", "lenguaje");
+            tabulador("}", "lenguaje");
 
-            lenguaje.WriteLine("\t\tpublic Lenguaje()");
-            lenguaje.WriteLine("\t\t{");
-            lenguaje.WriteLine("\t\t}");
-            lenguaje.WriteLine("\t\tpublic void Dispose()");
-            lenguaje.WriteLine("\t\t{");
-            lenguaje.WriteLine("\t\t\tcerrar();");
-            lenguaje.WriteLine("\t\t}");
+            tabulador("public Lenguaje()", "lenguaje");
+            tabulador("{", "lenguaje");
+            tabulador("}", "lenguaje");
+            tabulador("public void Dispose()", "lenguaje");
+            tabulador("{", "lenguaje");
+            tabulador("cerrar();", "lenguaje");
+            tabulador("}", "lenguaje");
         }
         private void listaProducciones()
         {
@@ -167,19 +184,19 @@ namespace Generador
             {
                 //Requerimiento 2.- Declarar un atributo "primeraProduccion" de tipo string y actualizarlo
                 primeraProduccion = getContenido();
-                lenguaje.WriteLine("\t\tpublic void " + primeraProduccion + "()");
+                tabulador("public void " + primeraProduccion + "()", "lenguaje");
                 producciones = true;
             }
             else
             {
-                lenguaje.WriteLine("\t\tprivate void " + getContenido() + "()");
+                tabulador("private void " + getContenido() + "()", "lenguaje");
             }
-            lenguaje.WriteLine("\t\t{");
+            tabulador("{", "lenguaje");
             match(Tipos.ST);
             match(Tipos.Produce);
             simbolos();
             match(Tipos.finProduccion);
-            lenguaje.WriteLine("\t\t}");
+            tabulador("}", "lenguaje");
             if (!FinArchivo())
             {
                 listaProducciones();
@@ -190,26 +207,37 @@ namespace Generador
             if (getContenido() == "\\(")
             {
                 match("\\(");
-                lenguaje.WriteLine("\t\tif ()");
-                lenguaje.WriteLine("\t\t{");
+                //Requerimiento 7.- Implementar la cerradura Epsilon
+                if (esSNT(getContenido()))
+                {
+                    throw new Exception("Error Sintactico: No se puede aplicar la cerradura Epsilon a un SNT");
+                }
+                else if (esTipo(getContenido()))
+                {
+                    tabulador("if (Tipos." + getContenido() + " == getClasificacion())", "lenguaje");
+                }
+                else
+                {
+                    tabulador("if (getContenido() == \"" + getContenido() + "\")", "lenguaje");
+                }
+                tabulador("{", "lenguaje");
                 simbolos();
                 match("\\)");
-                lenguaje.WriteLine("\t\t}");
+                tabulador("}", "lenguaje");
             }
             else if (esTipo(getContenido()))
             {
-                lenguaje.WriteLine("\t\t\tmatch(Tipos." + getContenido() + ");");
+                tabulador("match(Tipos." + getContenido() + ");", "lenguaje");
                 match(Tipos.ST);
             }
             else if (esSNT(getContenido()))
             {
-                lenguaje.WriteLine("\t\t\t" + getContenido() + "();");
+                tabulador("" + getContenido() + "();", "lenguaje");
                 match(Tipos.ST);
             }
             else if (getClasificacion() == Tipos.ST)
             {
-                //Debe de entrar aqui el match("#");
-                lenguaje.WriteLine("\t\t\tmatch(\"" + getContenido() + "\");");
+                tabulador("match(\"" + getContenido() + "\");", "lenguaje");
                 match(Tipos.ST);
             }
             else

@@ -6,5 +6,5 @@ Gramatica: cplusplus
     Printf -> printf(\(Cadena\))
     Scanf -> scanf(\(Cadena\))
     BloqueInstrucciones -> {ListaInstrucciones}
-    ListaInstrucciones -> Instruccion \(;ListaInstrucciones\)
+    ListaInstrucciones -> Instruccion \(.ListaInstrucciones\)
     Instruccion -> Printf (Scanf)

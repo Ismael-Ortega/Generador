@@ -1,5 +1,5 @@
 Archivo: c2.gram
-Fecha: 02/12/2022 09:06:48 a. m.
+Fecha: 02/12/2022 09:32:12 p. m.
 Gramatica ST
 : ST
 cplusplus ST
@@ -79,7 +79,7 @@ ListaInstrucciones ST
 -> Produce
 Instruccion ST
 \( PIzquierdo
-; ST
+. ST
 ListaInstrucciones ST
 \) PDerecho
 
